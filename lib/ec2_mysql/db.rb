@@ -29,7 +29,7 @@ class Ec2Mysql
       @password = password
       @hostname = hostname
       Ec2Mysql::Log.debug("Connecting to MySQL")
-      @dbh = DBI.connect("DBI:Mysql:mysql", username, password)
+      @dbh = DBI.connect("DBI:Mysql:mysql,port=5527", username, password)
     end
     
     def show_master_status
