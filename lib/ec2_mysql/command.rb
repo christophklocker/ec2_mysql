@@ -84,6 +84,9 @@ class Ec2Mysql
         opts.on("-h MYSQL_HOST", "--hostname MYSQL_HOST", "MySQL Server Hostname (default socket)") do |h|
           @mysql_host = h
         end
+        opts.on("-o MYSQL_PORT", "--port MYSQL_PORT", "MySQL Server PORT (default port)") do |o|
+          @mysql_port = o
+        end
         opts.on("-U MYSQL_REP_USER", "--replication-username MYSQL_REP_USER", "MySQL Username for replication") do |u|
           @mysql_rep_username = u
         end
@@ -151,6 +154,7 @@ class Ec2Mysql
     def slave
       raise "You must supply -v,--volume-id to bootstrap the slave from" unless @volume_id
       raise "You must supply -h,--mysql-host to configure the master" unless @mysql_host
+      raise "You must supply -o,--mysql-port to configure the master" unless @mysql_port
       raise "You must supply -U,--mysql-rep-username to configure the master" unless @mysql_rep_username
       raise "You must supply -P,--mysql-rep-password to configure the master" unless @mysql_rep_password
       
@@ -167,6 +171,7 @@ class Ec2Mysql
         master_status = JSON.load(json_file)
         json_file.close
         master_status["master_host"] = @mysql_host
+        master_status["master_port"] = @mysql_port
         master_status["master_user"] = @mysql_rep_username
         master_status["master_password"] = @mysql_rep_password
         @db = Ec2Mysql::DB.new(@mysql_username, @mysql_password, @mysql_host)

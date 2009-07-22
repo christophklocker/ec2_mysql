@@ -46,6 +46,7 @@ class Ec2Mysql
     def change_master(master_status)
       command = "CHANGE MASTER TO"
       command += " MASTER_HOST='#{master_status['master_host']}',"
+      command += " MASTER_PORT='#{master_status['master_port']}',"
       command += " MASTER_USER='#{master_status['master_user']}',"
       command += " MASTER_PASSWORD='#{master_status['master_password']}',"
       command += " MASTER_LOG_FILE='#{master_status['File']}',"
