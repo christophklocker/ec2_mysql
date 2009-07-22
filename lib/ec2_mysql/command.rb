@@ -18,6 +18,8 @@
 require 'rubygems'
 require 'optparse'
 require 'json'
+# loading dbi here, Mysql driver load fails if just loaded in db.rb
+require 'dbi'
 require File.join(File.dirname(__FILE__), "db")
 require File.join(File.dirname(__FILE__), "ec2")
 require File.join(File.dirname(__FILE__), "log")
@@ -43,7 +45,7 @@ class Ec2Mysql
       @to_keep = 2
       @device = "/dev/sdh"
       @kernel_device = "/dev/sdh"
-      @mount_point = "/mnt/mysql"
+      @mount_point = "/vol"
       @mysql_start = "/etc/init.d/mysql start"
       @log_level = :info
       
