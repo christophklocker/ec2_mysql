@@ -24,12 +24,12 @@ class Ec2Mysql
     
     attr_accessor :dbh
     
-    def initialize(username, password, hostname=nil)
+    def initialize(username, password, hostname=nil, port=nil)
       @username = username
       @password = password
       @hostname = hostname
       Ec2Mysql::Log.debug("Connecting to MySQL")
-      @dbh = DBI.connect("DBI:Mysql:mysql,port=5527", username, password)
+      @dbh = DBI.connect("DBI:Mysql:mysql#{',port=' + port unless port.nil?},port=5527", username, password)
     end
     
     def show_master_status
@@ -55,7 +55,7 @@ class Ec2Mysql
       @dbh.do(command)
       Ec2Mysql::Log.info("Master is now #{master_status['master_host']} at #{master_status['File']} pos #{master_status['Position']}")
     end
-    
+
     def slave_start
       @dbh.do("slave start")
       Ec2Mysql::Log.info("Slave started")

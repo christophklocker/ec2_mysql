@@ -140,7 +140,7 @@ class Ec2Mysql
       @ec2.get_instance_id
       @ec2.find_volume_id
       @ec2.manage_snapshots(@to_keep, @volume_id)
-      @db = Ec2Mysql::DB.new(@mysql_username, @mysql_password, @mysql_host)
+      @db = Ec2Mysql::DB.new(@mysql_username, @mysql_password, @mysql_host, @mysql_port)
       @db.flush_tables_with_read_lock
       master_status = @db.show_master_status
       ms_json = File.open(File.join(@mount_point, "master_status.json"), "w")
@@ -174,7 +174,7 @@ class Ec2Mysql
         master_status["master_port"] = @mysql_port
         master_status["master_user"] = @mysql_rep_username
         master_status["master_password"] = @mysql_rep_password
-        @db = Ec2Mysql::DB.new(@mysql_username, @mysql_password, @mysql_host)
+        @db = Ec2Mysql::DB.new(@mysql_username, @mysql_password, @mysql_host, @mysql_port)
         @db.change_master(master_status)
         @db.slave_start
       end
