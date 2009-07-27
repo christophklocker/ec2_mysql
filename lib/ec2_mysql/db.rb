@@ -77,6 +77,11 @@ class Ec2Mysql
       Ec2Mysql::Log.debug("Disconnecting from MySQL")
       @dbh.disconnect
     end
-    
+
+    def stop_slave
+      @dbh.do("STOP SLAVE")
+      Ec2Mysql::Log.info("Slave stopped")
+    end
+
+    end
   end
-end

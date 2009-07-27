@@ -28,8 +28,8 @@ class Ec2Mysql
   class Command
     
     attr_accessor :aws_access_key, :aws_secret_key, :mysql_username, 
-                  :mysql_password, :mysql_host, :instance_id, :volume_id,
-                  :to_keep, :log_level
+      :mysql_password, :mysql_host, :instance_id, :volume_id,
+      :to_keep, :log_level
     
     def initialize(args)
       @aws_access_key = nil
@@ -179,6 +179,14 @@ class Ec2Mysql
         @db.slave_start
       end
     end
-    
+
+    def stop_slave
+      raise "You must supply -h,--mysql-host to stop the slave" unless @mysql_host
+      raise "You must supply -o,--mysql-port to stop the slave" unless @mysql_port
+      raise "You must supply -p,--mysql-slave-root-password to stop the slave" unless @mysql_password
+      @db = Ec2Mysql::DB.new(@mysql_username, @mysql_password, @mysql_host, @mysql_port)
+      @db.stop_slave
+    end
+
   end
 end

@@ -163,8 +163,6 @@ class Ec2Mysql
         sleep 3
       end
       true
-    end
-    
-    
+    end    
   end
 end
