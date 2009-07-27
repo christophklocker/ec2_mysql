@@ -177,6 +177,7 @@ class Ec2Mysql
         @db = Ec2Mysql::DB.new(@mysql_username, @mysql_password, @mysql_host, @mysql_port)
         @db.change_master(master_status)
         @db.slave_start
+        @db.disconnect
       end
     end
 
@@ -186,6 +187,7 @@ class Ec2Mysql
       raise "You must supply -p,--mysql-slave-root-password to stop the slave" unless @mysql_password
       @db = Ec2Mysql::DB.new(@mysql_username, @mysql_password, @mysql_host, @mysql_port)
       @db.stop_slave
+      @db.disconnect
     end
 
   end
