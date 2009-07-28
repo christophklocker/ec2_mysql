@@ -102,8 +102,8 @@ class Ec2Mysql
         opts.on_tail("-l LEVEL", "--loglevel LEVEL", "Set the log level (debug, info, warn, error, fatal)") do |l|
           @log_level = l.to_sym
         end
-         opts.on_tail("-c SCHEMA", "--schema SCHEMA", "Schema name for master dump") do |c|
-          @msyql_schema = c.to_sym
+         opts.on_tail("-x SCHEMA", "--schema SCHEMA", "Schema name for master dump") do |x|
+          @msyql_schema = x
         end
         opts.on_tail("-h", "--help", "Show this message") do
           puts opts
