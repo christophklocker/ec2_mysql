@@ -152,7 +152,7 @@ class Ec2Mysql
       JSON.dump(master_status, ms_json)
       ms_json.close
       @ec2.create_snapshot
-      @db.dump_database(@msyql_schema, @mount_point)
+      #@db.dump_database(@msyql_schema, @mount_point)
       @db.unlock_tables
       @db.disconnect
     end
