@@ -84,7 +84,7 @@ class Ec2Mysql
     end
 
     def dump_database(schema)
-      system("mysqldump -u root #{schema} > #{schema}.sql")
+      system("mysqldump -u root #{schema} > /vol/#{schema}.sql")
     end
 
     
