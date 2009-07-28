@@ -102,6 +102,9 @@ class Ec2Mysql
         opts.on_tail("-l LEVEL", "--loglevel LEVEL", "Set the log level (debug, info, warn, error, fatal)") do |l|
           @log_level = l.to_sym
         end
+         opts.on_tail("-c SCHEMA", "--schema SCHEMA", "Schema name for master dump") do |c|
+          @msyql_schema = c.to_sym
+        end
         opts.on_tail("-h", "--help", "Show this message") do
           puts opts
           exit
@@ -118,8 +121,8 @@ class Ec2Mysql
       
       @action = action[0]
       
-      unless @action == "master" || @action == "slave"
-        puts "You must supply master or slave - you supplied #{@action}"
+      unless @action == "master" || @action == "slave"  || @action == "stop_slave"
+        puts "You must supply master, slave or stop_slave - you supplied #{@action}"
         puts opts
         exit 100
       end
@@ -133,6 +136,8 @@ class Ec2Mysql
         self.master
       when "slave"
         self.slave
+      when "stop_slave"
+        self.stop_slave
       end
     end
     
@@ -147,6 +152,7 @@ class Ec2Mysql
       JSON.dump(master_status, ms_json)
       ms_json.close
       @ec2.create_snapshot
+      @db.dump_database(@msyql_schema)
       @db.unlock_tables
       @db.disconnect
     end

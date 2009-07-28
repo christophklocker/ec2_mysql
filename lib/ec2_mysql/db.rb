@@ -29,7 +29,7 @@ class Ec2Mysql
       @password = password
       @hostname = hostname
       Ec2Mysql::Log.debug("Connecting to MySQL")
-      @dbh = DBI.connect("DBI:Mysql:mysql#{',port=' + port unless port.nil?},port=5527", username, password)
+      @dbh = DBI.connect("DBI:Mysql:mysql#{',port=' + port unless port.nil?}", username, password)
     end
     
     def show_master_status
@@ -83,5 +83,10 @@ class Ec2Mysql
       Ec2Mysql::Log.info("Slave stopped")
     end
 
+    def dump_database(schema)
+      system("mysqldump -u root #{schema} > #{schema}.sql")
     end
+
+    
   end
+end
