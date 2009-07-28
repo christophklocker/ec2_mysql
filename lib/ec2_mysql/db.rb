@@ -85,7 +85,8 @@ class Ec2Mysql
 
     def dump_database(schema, mount_point)
       Ec2Mysql::Log.info("Dumping schema #{schema}")
-      system("mysqldump -u root #{schema} > #{mount_point}/dump/#{schema}.sql")
+      system("mysqldump -u root #{schema} > #{schema}.sql")
+      system("mv #{schema}.sql #{mount_point}/dump/")
     end
 
     
