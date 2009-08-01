@@ -83,10 +83,15 @@ class Ec2Mysql
       Ec2Mysql::Log.info("Slave stopped")
     end
 
-    def dump_database(schema, mount_point)
+    def dump_database(schema, mount_point, pwd)
       Ec2Mysql::Log.info("Dumping schema #{schema}")
-      system("mysqldump -u root #{schema} > #{schema}.sql")
+      system("mysqldump -u root -p#{pwd} #{schema} > #{schema}.sql")
       system("mv #{schema}.sql #{mount_point}/dump/")
+    end
+
+    def load_dump(schema, mount_point, pwd)
+      Ec2Mysql::Log.info("Dumping schema #{schema}")
+      system("mysql -u root -p#{pwd} #{schema} < #{mount_point}/dump/#{schema}.sql")
     end
 
     

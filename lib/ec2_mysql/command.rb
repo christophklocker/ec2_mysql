@@ -151,6 +151,7 @@ class Ec2Mysql
       ms_json = File.open(File.join(@mount_point, "master_status.json"), "w")
       JSON.dump(master_status, ms_json)
       ms_json.close
+      @db.dump_database(@mysql_schema, @mount_point, @mysql_password)
       @ec2.create_snapshot
       #@db.dump_database(@msyql_schema, @mount_point)
       @db.unlock_tables
@@ -181,6 +182,7 @@ class Ec2Mysql
         master_status["master_user"] = @mysql_rep_username
         master_status["master_password"] = @mysql_rep_password
         @db = Ec2Mysql::DB.new(@mysql_username, @mysql_password, @mysql_host, @mysql_port)
+        @db.dump_database(@mysql_schema, @mount_point, @mysql_password)
         @db.change_master(master_status)
         @db.slave_start
         @db.disconnect
